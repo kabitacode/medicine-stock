@@ -1,4 +1,4 @@
-# skripsi-app-stokobat
+# Medicine Stock
 
 ## Version :
 ### Node => 18^
