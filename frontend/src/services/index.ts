@@ -6,6 +6,9 @@ import {fetchBatch, fetchBatchId, fetchBatchAdd, fetchBatchEdit, fetchBatchDelet
 import {fetchPenjualan, fetchPenjualanAdd, fetchPenjualanDelete, fetchPenjualanById, fetchPenjualanByKategori, fetchPenjualanFilter} from '@/services/penjualan';
 import {fetchLaporanObat, fetchDataLaporan, fetchLaporanKadaluarsa, fetchLaporanMendekatiKadaluarsa, fetchLaporanPenjualan, fetchFilterObatKadaluarsa, fetchFilterObatMendekatiKadaluarsa, fetchFilterObatKadaluarsaByEmptyStok, fetchFilterObatMendekatiByEmptyStok, fetchFilterPenjualan, fetchFilterPenjualanByEmptyStok} from '@/services/laporan';
 import {login, logout, fetchRegister} from '@/services/auth';
+import {fetchSupplierId, fetchSupplier, fetchSupplierAdd, fetchSupplierEdit, fetchSupplierDelete} from '@/services/supplier';
+import {fetchObatMasuk, fetchObatMasukAdd, fetchObatMasukDelete, fetchObatMasukEdit, fetchObatMasukId} from '@/services/obatMasuk';
+
 import {api} from '@/services/api';
 
 export {
@@ -39,6 +42,18 @@ export {
     fetchKategoriAdd,
     fetchKategoriEdit,
     fetchKategoriDelete,
+
+    fetchSupplier,
+    fetchSupplierAdd,
+    fetchSupplierDelete,
+    fetchSupplierEdit,
+    fetchSupplierId,
+
+    fetchObatMasuk,
+    fetchObatMasukAdd,
+    fetchObatMasukEdit,
+    fetchObatMasukDelete,
+    fetchObatMasukId,
 
     fetchBatch,
     fetchBatchId,
