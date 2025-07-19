@@ -113,7 +113,7 @@ const Page: React.FC = () => {
 
             <div className='mx-5'>
                 <Table>
-                    <TableHead className='bg-blue-700'>
+                    <TableHead className='bg-green-700'>
                         <TableRow>
                             <TableCell sx={{ color: 'white', fontWeight: '600' }}>No</TableCell>
                             <TableCell sx={{ color: 'white', fontWeight: '600' }}>Nama Kategori</TableCell>

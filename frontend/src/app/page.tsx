@@ -35,7 +35,7 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className="bg-blue-200 h-svh">
+    <div className="bg-green-200 h-svh">
       <div className="container mx-auto py-8 pt-24">
         {
           error && <div className="mb-10 flex items-center justify-center">
@@ -77,7 +77,7 @@ const Page: React.FC = () => {
             {errors.password && <p className="mt-3 text-sm text-red-500">Password is required</p>}
           </div>
           <button
-            className="w-full mb-5 bg-blue-700 text-white text-sm font-bold py-3 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+            className="w-full mb-5 bg-green-700 text-white text-sm font-bold py-3 px-4 rounded-md hover:bg-green-700 transition duration-300"
             type="submit"
           >
             {loading ? <CircularProgress size={24} /> : 'Login'}

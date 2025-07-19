@@ -30,7 +30,9 @@ export default function RootLayout({
   dayjs.locale('id');
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = sessionStorage.getItem('user');
+    console.log('user:', storedUser);
+    
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       if (!user) {
