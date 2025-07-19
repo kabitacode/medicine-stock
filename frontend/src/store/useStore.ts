@@ -15,13 +15,13 @@ interface AuthState {
 }
 
 const useStore = create<AuthState>((set) => ({
-  user: typeof window !== "undefined" ? JSON.parse(localStorage.getItem('user') || 'null') : null,
+  user: typeof window !== "undefined" ? JSON.parse(sessionStorage.getItem('user') || 'null') : null,
   setUser: (user) => {
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(user));
     set({ user });
   },
   clearUser: () => {
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
     set({ user: null });
   },
 }));
