@@ -9,6 +9,8 @@ import UserRoute from './routes/UserRoute.mjs';
 import ObatRoute from './routes/ObatRoute.mjs';
 import AuthRoute from './routes/AuthRoute.mjs';
 import KategoriRoute from './routes/KategoriRoute.mjs';
+import ObatMasukRoute from './routes/SupplierRoute.mjs';
+import SupplierRoute from './routes/ObatMasukRoute.mjs';
 import BatchRoute from './routes/BatchRoute.mjs';
 import PenjualanRoute from './routes/PenjualanRoute.mjs';
 import DashboardRoute from './routes/DashboardRoute.mjs';
@@ -25,7 +27,7 @@ const app = express();
 // (async () => {
 //     try {
 //         // Sinkronkan semua model
-//         await db.sync(); // Gunakan { force: true } hanya saat pengembangan
+//         await db.sync({force: true}); // Gunakan { force: true } hanya saat pengembangan
 //         console.log('All models were synchronized successfully.');   
 
 //     } catch (error) {
@@ -48,6 +50,8 @@ app.use(AuthRoute);
 app.use(UserRoute);
 app.use(ObatRoute);
 app.use(KategoriRoute);
+app.use(SupplierRoute);
+app.use(ObatMasukRoute);
 app.use(BatchRoute);
 app.use(PenjualanRoute);
 app.use(DashboardRoute);
