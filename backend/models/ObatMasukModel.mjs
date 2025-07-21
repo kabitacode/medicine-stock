@@ -12,14 +12,6 @@ const ObatMasukModel = db.define('obat_masuk', {
         primaryKey: true,
         autoIncrement: true
     },
-    nama_obat: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-            notEmpty: true,
-            len: [3, 100]
-        }
-    },
     tanggal_masuk: {
         type: DataTypes.DATEONLY,
         allowNull: false,
