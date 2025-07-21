@@ -81,7 +81,7 @@ const Page: React.FC = () => {
                 {...register('role', { required: true })}
               >
                 <MenuItem value={"Admin"}>Admin</MenuItem>
-                <MenuItem value={"Apoteker"}>Apoteker</MenuItem>
+                <MenuItem value={"Kasir"}>Kasir</MenuItem>
               </Select>
             </FormControl>
           </div>
