@@ -1,8 +1,17 @@
 import ObatMasukModel from '../models/ObatMasukModel.mjs';
+import ObatModel from '../models/ObatModel.mjs';
+import SupplierModel from '../models/SupplierModel.mjs';
+import UserModel from '../models/UserModel.mjs';
 
 export const getObatMasuk = async (req, res) => {
     try {
-        const response = await ObatMasukModel.findAll();
+        const response = await ObatMasukModel.findAll({
+            include: [
+                {model: ObatModel},
+                {model: UserModel, attributes: ['id', 'name', 'email', 'role'] },
+                {model: SupplierModel},
+            ]
+        });
         res.status(200).json({
             status: 200,
             message: "success",
@@ -34,10 +43,13 @@ export const getObatMasukById = async (req, res) => {
 
 export const createObatMasuk = async (req, res) => {
     try {
-        const { nama, penerbit } = req.body;
+        const { tanggal_masuk, id_user, id_obat, id_supplier } = req.body;
+        
         await ObatMasukModel.create({
-            nama: nama,
-            penerbit: penerbit
+            tanggal_masuk: tanggal_masuk,
+            id_obat: id_obat,
+            id_supplier: id_supplier,
+            id_user: id_user
         });
         res.status(201).json({
             status: 201,
@@ -49,7 +61,7 @@ export const createObatMasuk = async (req, res) => {
 }
 
 export const updateObatMasuk = async (req, res) => {
-    const { nama, penerbit } = req.body;
+    const { nama_obat, tanggal_masuk, id_user, id_obat, id_supplier } = req.body;
     try {
         const user = await ObatMasukModel.findOne({
             where: {
@@ -59,8 +71,11 @@ export const updateObatMasuk = async (req, res) => {
 
         if (!user) return res.status(404).json({ message: "Data Tidak Ditemukan!" });
         await ObatMasukModel.update({
-            nama: nama,
-            penerbit: penerbit
+            nama_obat,
+            tanggal_masuk,
+            id_obat,
+            id_supplier,
+            id_user
         }, {
             where: {
                 id: user.id
