@@ -112,7 +112,7 @@ const Page: React.FC<FormData> = () => {
                                     onChange={handleChange}
                                 >
                                     <MenuItem value={"Admin"}>Admin</MenuItem>
-                                    <MenuItem value={"Apoteker"}>Apoteker</MenuItem>
+                                    <MenuItem value={"Kasir"}>Kasir</MenuItem>
                                 </Select>
                             </FormControl>
                         </div>
