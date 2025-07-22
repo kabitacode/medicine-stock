@@ -9,7 +9,7 @@ import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Alert, AlertTitle, IconButton } from '@mui/material';
-import { AccountBox, ArrowDropDown, ArrowRight, Category, ChevronRight, Home, Logout, MedicalInformation, MedicalServices, Medication, Report, Storefront, StoreMallDirectory, People, MedicalInformationSharp } from '@mui/icons-material';
+import { AccountBox, ArrowDropDown, ArrowRight, Category, ChevronRight, Home, Logout, MedicalInformation, MedicalServices, Medication, Report, Storefront, StoreMallDirectory, People, MedicalInformationSharp, MedicalServicesOutlined } from '@mui/icons-material';
 import { StyledMenu } from '@/components';
 import { logout } from '@/services';
 import useStore from '@/store/useStore'
@@ -76,9 +76,9 @@ export default function DashboardLayout({ children }: any) {
                            <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                         </svg>
                      </button>
-                     <Link href="https://flowbite.com" className="flex ml-2 md:mr-24">
-                        <img src="https://flowbite.com/docs/images/logo.svg" className="h-8 mr-3" alt="FlowBite Logo" />
-                        <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">StokObat</span>
+                     <Link href="" className="flex ml-2 md:mr-24">
+                        <MedicalServicesOutlined sx={{ color: 'green' }} className='mr-4' fontSize='large' />
+                        <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Sistem Informasi Inventory Obat</span>
                      </Link>
                   </div>
                   <IconButton
@@ -152,7 +152,7 @@ export default function DashboardLayout({ children }: any) {
                      </Link>
                   </li>
                   <li onClick={() => setIsSubMenu(!isSubMenu)} className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <div className="flex justify-between items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                     <div className="flex justify-between items-center p-2 cursor-pointer text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
                         <div className='flex items-center'>
                            <Report sx={{ color: activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan'? 'white' : 'black' }} fontSize='small' />
                            <span className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan</span>
