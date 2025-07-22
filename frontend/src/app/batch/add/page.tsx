@@ -140,7 +140,7 @@ const Page: React.FC<FormData> = () => {
                             disabled={loading}
                             style={{ textTransform: 'none' }}
                         >
-                            {loading ? 'Loading...' : 'Tambah'}
+                            {loading ? 'Loading...' : 'Simpan'}
                         </Button>
                     </div>
                 </form>
