@@ -43,7 +43,7 @@ export const getObatMasukById = async (req, res) => {
 
 export const createObatMasuk = async (req, res) => {
     try {
-        const { tanggal_masuk, id_user, id_obat, id_supplier } = req.body;
+        const { tanggal_masuk, id_user, id_obat, id_supplier } = req.body;        
         
         await ObatMasukModel.create({
             tanggal_masuk: tanggal_masuk,
