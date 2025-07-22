@@ -160,7 +160,17 @@ const Page: React.FC = () => {
                             />
                         </LocalizationProvider>
                     </div>
-                    <Button variant="contained" sx={{ height: 40 }} onClick={() => getFilter()}>Filter</Button>
+                    <Button variant="contained" sx={{
+                        height: 50,
+                        width: '7.77%',
+                        fontSize: 15,
+                        textTransform: 'none',
+                        letterSpacing: '2px',
+                        backgroundColor: '#15803d',
+                        '&:hover': {
+                            backgroundColor: '#166534',
+                        },
+                    }} onClick={() => getFilter()}>Filter</Button>
                 </div>
             </div>
 
