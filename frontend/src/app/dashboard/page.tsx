@@ -262,7 +262,16 @@ const Page: React.FC = () => {
               disableFuture
             />
           </LocalizationProvider>
-          <Button variant="contained" onClick={fetchDataPenjualan}>Lihat Laporan</Button>
+          <Button variant="contained" sx={{
+            height: 55,
+            fontSize: 15,
+            textTransform: 'none',
+            letterSpacing: '2px',
+            backgroundColor: '#15803d',
+            '&:hover': {
+              backgroundColor: '#166534',
+            },
+          }} onClick={fetchDataPenjualan}>Lihat Laporan</Button>
         </Box>
 
 

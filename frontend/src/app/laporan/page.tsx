@@ -38,7 +38,7 @@ const Page: React.FC = () => {
     const [end_date, setEndDate] = useState<Dayjs | null>(dayjs());
     const [status, setStatus] = React.useState('');
     const [statusStok, setStatusStok] = React.useState('');
-    
+
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -54,7 +54,7 @@ const Page: React.FC = () => {
         try {
             const apiData = await fetchDataLaporan(user?.token);
             setData(apiData.data.laporan);
-            
+
             setLoading(false);
         } catch (error: any) {
             toast.error(error.response?.data?.message || error.message);
@@ -86,8 +86,8 @@ const Page: React.FC = () => {
             const tanggalSelesai = end_date?.format('YYYY-MM-DD')
             const response = await fetchFilterObat(user?.token, tanggalMulai, tanggalSelesai)
             setData(response.data);
-            
-            
+
+
             toast.success(response.message || "Success!");
         } catch (error: any) {
             toast.error(error.response?.data?.message || error.message);
@@ -114,9 +114,9 @@ const Page: React.FC = () => {
         if (!user || !user.token) return;
 
         try {
-           let apiData = await fetchLaporanObat(user?.token);
-         
-            
+            let apiData = await fetchLaporanObat(user?.token);
+
+
             toast.success(apiData.message || "Data berhasil Didownload!");
             fetchData();
             setLoading(false);
@@ -138,7 +138,7 @@ const Page: React.FC = () => {
 
     const handleChangeStok = (event: SelectChangeEvent) => {
         setStatusStok(event.target.value);
-     
+
         if (event.target.value == "true") {
             getFilterByEmptyStok(event.target.value)
         } else {
@@ -186,74 +186,83 @@ const Page: React.FC = () => {
                             />
                         </LocalizationProvider>
                     </div>
-                    <Button variant="contained" sx={{ height: 40 }} onClick={() => getFilter()}>Filter</Button>
-                </div>
+                    <Button variant="contained" sx={{
+                        height: 50,
+                        width: '7.77%',
+                        fontSize: 15,
+                        textTransform: 'none',
+                        letterSpacing: '2px',
+                        backgroundColor: '#15803d',
+                        '&:hover': {
+                            backgroundColor: '#166534',
+                        },
+                    }} onClick={() => getFilter()}>Filter</Button>                </div>
             </div>
 
             <div className='ml-5 mb-5'>
-                    <h4 className="text-lg font-semibold mb-3">Filter By Stok</h4>
-                    <div className="mr-3">
-                        <FormControl sx={{ minWidth: 140 }} size="small">
-                            <InputLabel id="demo-select-small-label">Status Stok</InputLabel>
-                            <Select
-                                labelId="demo-select-small-label"
-                                id="demo-select-small"
-                                value={statusStok}
-                                label="Age"
-                                onChange={handleChangeStok}
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={"true"}>Stok Habis</MenuItem>
-                                <MenuItem value={""}>Semua Stok</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div>
+                <h4 className="text-lg font-semibold mb-3">Filter By Stok</h4>
+                <div className="mr-3">
+                    <FormControl sx={{ minWidth: 140 }} size="small">
+                        <InputLabel id="demo-select-small-label">Status Stok</InputLabel>
+                        <Select
+                            labelId="demo-select-small-label"
+                            id="demo-select-small"
+                            value={statusStok}
+                            label="Age"
+                            onChange={handleChangeStok}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={"true"}>Stok Habis</MenuItem>
+                            <MenuItem value={""}>Semua Stok</MenuItem>
+                        </Select>
+                    </FormControl>
                 </div>
-            
+            </div>
 
-                <div className='mx-5'>
-                    <Table>
-                        <TableHead className='bg-green-700'>
-                            <TableRow>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>No</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Nama Obat</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Penerbit</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Kategori</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Stok</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Harga Jual</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Harga Beli</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Tanggal Kadaluarsa</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Status Kadaluarsa</TableCell>
+
+            <div className='mx-5'>
+                <Table>
+                    <TableHead className='bg-green-700'>
+                        <TableRow>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>No</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Nama Obat</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Penerbit</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Kategori</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Stok</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Harga Jual</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Harga Beli</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Tanggal Kadaluarsa</TableCell>
+                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Status Kadaluarsa</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
+                            <TableRow key={item.id}>
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{item.nama_obat}</TableCell>
+                                <TableCell>{item.kategori.penerbit ? item.kategori.penerbit : item.penerbit}</TableCell>
+                                <TableCell>{item.kategori.nama ? item.kategori.nama : item.kategori}</TableCell>
+                                <TableCell>{item.stok}</TableCell>
+                                <TableCell>{item.harga}</TableCell>
+                                <TableCell>{item.harga_beli}</TableCell>
+                                <TableCell>{formattedDate(item.tanggal_kadaluarsa)}</TableCell>
+                                <TableCell>{item.status_kadaluarsa}</TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
-                                <TableRow key={item.id}>
-                                    <TableCell>{index + 1}</TableCell>
-                                    <TableCell>{item.nama_obat}</TableCell>
-                                    <TableCell>{item.kategori.penerbit ? item.kategori.penerbit : item.penerbit}</TableCell>
-                                    <TableCell>{item.kategori.nama ? item.kategori.nama : item.kategori}</TableCell>
-                                    <TableCell>{item.stok}</TableCell>
-                                    <TableCell>{item.harga}</TableCell>
-                                    <TableCell>{item.harga_beli}</TableCell>
-                                    <TableCell>{formattedDate(item.tanggal_kadaluarsa)}</TableCell>
-                                    <TableCell>{item.status_kadaluarsa}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={data.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </div> 
+                        ))}
+                    </TableBody>
+                </Table>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={data.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
         </DashboardLayout>
     )
 }
