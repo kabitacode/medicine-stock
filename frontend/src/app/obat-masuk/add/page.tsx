@@ -6,7 +6,7 @@ import DashboardLayout from "../../dashboard/layout";
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { TextField, Button, IconButton, Box, InputLabel, MenuItem, FormControl, CircularProgress } from '@mui/material';
 import Select from '@mui/material/Select';
-import {fetchObat, fetchObatMasukAdd, fetchSupplier } from '@/services';
+import { fetchObat, fetchObatMasukAdd, fetchSupplier, fetchUsers } from '@/services';
 import useStore from '@/store/useStore';
 import { ArrowBack } from '@mui/icons-material';
 import { toast } from 'react-hot-toast';
@@ -40,11 +40,19 @@ interface dataResponseSupplier {
     no_telepon: string;
 }
 
+interface dataResponseUser {
+    id: number;
+    name: string;
+    role: string;
+    email: string;
+}
+
 const Page: React.FC = () => {
     const { register, handleSubmit, reset, formState: { errors }, control, setValue } = useForm<FormData>();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<dataResponse[]>([]);
     const [dataSupplier, setDataSupplier] = useState<dataResponseSupplier[]>([]);
+    const [dataUser, setDataUser] = useState<dataResponseUser[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [tanggal, setTanggal] = useState<Dayjs | null>(dayjs());
 
@@ -59,6 +67,23 @@ const Page: React.FC = () => {
             const result = response.data;
 
             setData(result);
+            setLoading(false);
+
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchDataUser = async () => {
+        if (!user || !user.token) return;
+
+        try {
+            const response = await fetchUsers(user?.token);
+            const result = response.data;
+
+            setDataUser(result);
             setLoading(false);
 
         } catch (error: any) {
@@ -88,6 +113,7 @@ const Page: React.FC = () => {
     useEffect(() => {
         fetchData();
         fetchDataSupplier();
+        fetchDataUser();
     }, [user]);
 
 
@@ -96,12 +122,11 @@ const Page: React.FC = () => {
         setLoading(true);
         try {
             const postData = {
-                nama_obat: data.obat,
                 id_obat: data.obat,
                 tanggal_masuk: tanggal?.format('YYYY-MM-DD'),
                 id_supplier: data.supplier,
                 id_user: data.user,
-            };            
+            };
             const response = await fetchObatMasukAdd(user?.token, postData);
             toast.success(response.message || "Data berhasil Ditambahkan!");
             reset();
@@ -183,8 +208,8 @@ const Page: React.FC = () => {
                                         label="Penerima"
                                         onChange={onChange}
                                     >
-                                        {data.map((item) => (
-                                            <MenuItem key={item.id} value={item.id}>{item?.user.name}</MenuItem>
+                                        {dataUser.map((item) => (
+                                            <MenuItem key={item.id} value={item.id}>{item?.name}</MenuItem>
                                         ))}
                                     </Select>
                                 )}
@@ -221,15 +246,20 @@ const Page: React.FC = () => {
 
                     <div className="mt-8">
                         <Button
-                            size='large'
-                            className='w-1/6'
+                            size="large"
                             type="submit"
                             variant="contained"
-                            color="primary"
                             disabled={loading}
-                            style={{ textTransform: 'none' }}
+                            sx={{
+                                width: '16.66%',
+                                backgroundColor: '#15803d',
+                                textTransform: 'none',
+                                '&:hover': {
+                                    backgroundColor: '#166534',
+                                },
+                            }}
                         >
-                            {loading ? 'Loading...' : 'Tambah'}
+                            {loading ? 'Loading...' : 'Simpan'}
                         </Button>
                     </div>
                 </form>
