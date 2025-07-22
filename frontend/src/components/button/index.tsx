@@ -27,7 +27,7 @@ export const CustomButton = styled(Button)({
     padding: '6px 12px',
     border: '1px solid',
     lineHeight: 1.5,
-    backgroundColor: '#1d4ed8',
+    backgroundColor: '#15803d',
     color: '#ffffff',
     borderColor: '#0063cc',
     fontFamily: [
