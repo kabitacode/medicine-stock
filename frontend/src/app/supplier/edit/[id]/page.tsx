@@ -67,8 +67,6 @@ const Page: React.FC<FormData> = () => {
                 no_telepon: data.telepon
             };
 
-            console.log(postData);
-            
             const response = await fetchSupplierEdit(user?.token, params.id, postData);
             toast.success(response.message || "Data berhasil Diubah!");
             reset({
@@ -148,13 +146,18 @@ const Page: React.FC<FormData> = () => {
                     </div>
                     <div className="mt-8">
                         <Button
-                            size='large'
-                            className='w-1/6'
+                            size="large"
                             type="submit"
                             variant="contained"
-                            color="primary"
                             disabled={loading}
-                            style={{ textTransform: 'none' }}
+                            sx={{
+                                width: '16.66%',
+                                backgroundColor: '#15803d',
+                                textTransform: 'none',
+                                '&:hover': {
+                                    backgroundColor: '#166534',
+                                },
+                            }}
                         >
                             {loading ? 'Loading...' : 'Simpan'}
                         </Button>
