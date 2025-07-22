@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import DashboardLayout from "../dashboard/layout";
 import Link from 'next/link';
 import { Add, Delete, Edit } from "@mui/icons-material";
-import { CustomButton, ButtonCustom } from "@/components";
+import { CustomButton, ButtonCustom, CustomModal } from "@/components";
 import { fetchUsers, fetchUsersDelete } from '@/services';
 import useStore, { User } from '@/store/useStore'
 import { Table, TablePagination, TableHead, TableRow, TableCell, TableBody, CircularProgress, Button, Alert, AlertTitle, TextField } from '@mui/material';
@@ -24,7 +24,8 @@ const Page: React.FC = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchQuery, setSearchQuery] = useState<string>('');
-
+    const [open, setOpen] = useState<boolean>(false);
+    const [itemId, setItemId] = useState<string>('');
 
     const fetchDataUsers = async () => {
         if (!user || !user.token) return;
@@ -84,94 +85,100 @@ const Page: React.FC = () => {
 
 
     return (
-        <DashboardLayout>
-            {
-                loading && <CircularProgress />
-            }
+        <React.Fragment>
+            <DashboardLayout>
+                {
+                    loading && <CircularProgress />
+                }
 
-            <div className="flex mt-4 mr-5 ml-5 mb-5 justify-between">
-                <h1 className="text-2xl font-semibold">Data User</h1>
+                <div className="flex mt-4 mr-5 ml-5 mb-5 justify-between">
+                    <h1 className="text-2xl font-semibold">Data User</h1>
 
-                <div className="">
-                    <Link href={'/user/add'}>
-                        <CustomButton startIcon={<Add />}>
-                            Tambah
-                        </CustomButton>
-                    </Link>
+                    <div className="">
+                        <Link href={'/user/add'}>
+                            <CustomButton startIcon={<Add />}>
+                                Tambah
+                            </CustomButton>
+                        </Link>
+                    </div>
                 </div>
-            </div>
 
-            <div className="ml-5 mb-6 w-1/3">
-                <TextField
-                    label="Cari User"
-                    variant="outlined"
-                    fullWidth
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                />
-            </div>
+                <div className="ml-5 mb-6 w-1/3">
+                    <TextField
+                        label="Cari User"
+                        variant="outlined"
+                        fullWidth
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                    />
+                </div>
 
-            <div className='mx-5'>
-                <Table>
-                    <TableHead className='bg-green-700'>
-                        <TableRow>
-                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>No</TableCell>
-                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Nama</TableCell>
-                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Email</TableCell>
-                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Role</TableCell>
-                            <TableCell sx={{ color: 'white', fontWeight: '600' }}>Password</TableCell>
-                            <TableCell sx={{ color: 'white', fontWeight: '600', textAlign: 'center' }}>Action</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
-                            <TableRow key={item.id}>
-                                <TableCell>{index + 1}</TableCell>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.email}</TableCell>
-                                <TableCell>{item.role}</TableCell>
-                                <TableCell>{item.password}</TableCell>
-                                <TableCell>
-                                    <div className='flex flex-row justify-center'>
-                                        <div className='mr-2'>
-                                            <ButtonCustom
-                                                color='success'
-                                                onClick={() => handleEdit(item.id)}
-                                                fontSize="0.75rem"
-                                                textTransform="none"
-                                                variant='outlined'
-                                            >
-                                                Edit
-                                            </ButtonCustom>
-                                        </div>
-                                        <div>
-                                            <ButtonCustom
-                                                color="error"
-                                                onClick={() => handleDelete(item.id)}
-                                                variant="outlined"
-                                                textTransform='none'
-                                                fontSize="0.75rem"
-                                            >
-                                                Delete
-                                            </ButtonCustom>
-                                        </div>
-                                    </div>
-                                </TableCell>
+                <div className='mx-5'>
+                    <Table>
+                        <TableHead className='bg-green-700'>
+                            <TableRow>
+                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>No</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Nama</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Email</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Role</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Password</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600', textAlign: 'center' }}>Action</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={data.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </div>
-        </DashboardLayout>
+                        </TableHead>
+                        <TableBody>
+                            {filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
+                                <TableRow key={item.id}>
+                                    <TableCell>{index + 1}</TableCell>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.email}</TableCell>
+                                    <TableCell>{item.role}</TableCell>
+                                    <TableCell>{item.password}</TableCell>
+                                    <TableCell>
+                                        <div className='flex flex-row justify-center'>
+                                            <div className='mr-2'>
+                                                <ButtonCustom
+                                                    color='success'
+                                                    onClick={() => handleEdit(item.id)}
+                                                    fontSize="0.75rem"
+                                                    textTransform="none"
+                                                    variant='outlined'
+                                                >
+                                                    Edit
+                                                </ButtonCustom>
+                                            </div>
+                                            <div>
+                                                <ButtonCustom
+                                                    color="error"
+                                                    onClick={() => {
+                                                        setOpen(true);
+                                                        setItemId(item?.id);
+                                                    }}
+                                                    variant="outlined"
+                                                    textTransform='none'
+                                                    fontSize="0.75rem"
+                                                >
+                                                    Delete
+                                                </ButtonCustom>
+                                            </div>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={data.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </div>
+            </DashboardLayout>
+            <CustomModal open={open} onClose={() => setOpen(false)} onConfirm={() => handleDelete(itemId)} />
+        </React.Fragment>
     )
 }
 
