@@ -180,30 +180,30 @@ const Page: React.FC = () => {
                             </FormControl>
                         </div>
                         <div className="w-1/3">
-                        <FormControl fullWidth error={!!errors.kategori}>
-                            <InputLabel id="penerbit-label">Penerbit</InputLabel>
-                            <Controller
-                                name="penerbit"
-                                control={control}
-                                defaultValue=""
-                                rules={{ required: "Penerbit is required" }}
-                                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                                    <Select
-                                        labelId="penerbit-label"
-                                        id="penerbit"
-                                        value={value}
-                                        label="Penerbit"
-                                        onChange={onChange}
-                                    >
-                                        {data.map((item) => (
-                                            <MenuItem key={item.id} value={item.id}>{item.penerbit}</MenuItem>
-                                        ))}
-                                    </Select>
-                                )}
-                            />
-                            {errors.penerbit && <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained mui-1wc848c-MuiFormHelperText-root" id="penerbit">{errors.penerbit.message}</p>}
-                        </FormControl>
-                    </div>
+                            <FormControl fullWidth error={!!errors.kategori}>
+                                <InputLabel id="penerbit-label">Penerbit</InputLabel>
+                                <Controller
+                                    name="penerbit"
+                                    control={control}
+                                    defaultValue=""
+                                    rules={{ required: "Penerbit is required" }}
+                                    render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                        <Select
+                                            labelId="penerbit-label"
+                                            id="penerbit"
+                                            value={value}
+                                            label="Penerbit"
+                                            onChange={onChange}
+                                        >
+                                            {data.map((item) => (
+                                                <MenuItem key={item.id} value={item.id}>{item.penerbit}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    )}
+                                />
+                                {errors.penerbit && <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained mui-1wc848c-MuiFormHelperText-root" id="penerbit">{errors.penerbit.message}</p>}
+                            </FormControl>
+                        </div>
                     </div>
                     <div className="w-1/3">
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -220,15 +220,20 @@ const Page: React.FC = () => {
                     </div>
                     <div className="mt-8">
                         <Button
-                            size='large'
-                            className='w-1/6'
+                            size="large"
                             type="submit"
                             variant="contained"
-                            color="primary"
                             disabled={loading}
-                            style={{ textTransform: 'none' }}
+                            sx={{
+                                width: '16.66%',
+                                backgroundColor: '#15803d',
+                                textTransform: 'none',
+                                '&:hover': {
+                                    backgroundColor: '#166534',
+                                },
+                            }}
                         >
-                            {loading ? 'Loading...' : 'Tambah'}
+                            {loading ? 'Loading...' : 'Simpan'}
                         </Button>
                     </div>
                 </form>
