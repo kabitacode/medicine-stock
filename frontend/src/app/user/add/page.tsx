@@ -44,7 +44,7 @@ const Page: React.FC<FormData> = () => {
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         if (!user || !user.token) return;
         setLoading(true);
-    
+
         try {
             const postData = {
                 name: data.name,
@@ -116,7 +116,7 @@ const Page: React.FC<FormData> = () => {
                                 </Select>
                             </FormControl>
                         </div>
-                      
+
 
                         {/* <div className="w-1/3 mr-5">
                             <TextField
@@ -144,15 +144,20 @@ const Page: React.FC<FormData> = () => {
                     </div>
                     <div className="mt-8">
                         <Button
-                            size='large'
-                            className='w-1/6'
+                            size="large"
                             type="submit"
                             variant="contained"
-                            color="primary"
                             disabled={loading}
-                            style={{ textTransform: 'none' }}
+                            sx={{
+                                width: '16.66%',
+                                backgroundColor: '#15803d',
+                                textTransform: 'none',
+                                '&:hover': {
+                                    backgroundColor: '#166534',
+                                },
+                            }}
                         >
-                            {loading ? 'Loading...' : 'Tambah'}
+                            {loading ? 'Loading...' : 'Simpan'}
                         </Button>
                     </div>
                 </form>
