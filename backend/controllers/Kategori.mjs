@@ -34,10 +34,9 @@ export const getKategoriById = async (req, res) => {
 
 export const createKategori = async (req, res) => {
     try {
-        const { nama, penerbit } = req.body;
+        const { nama } = req.body;
         await KategoriModel.create({
-            nama: nama,
-            penerbit: penerbit
+            nama: nama
         });
         res.status(201).json({
             status: 201,
@@ -49,7 +48,7 @@ export const createKategori = async (req, res) => {
 }
 
 export const updateKategori = async (req, res) => {
-    const { nama, penerbit } = req.body;
+    const { nama } = req.body;
     try {
         const user = await KategoriModel.findOne({
             where: {
@@ -60,7 +59,6 @@ export const updateKategori = async (req, res) => {
         if (!user) return res.status(404).json({ message: "Data Tidak Ditemukan!" });
         await KategoriModel.update({
             nama: nama,
-            penerbit: penerbit
         }, {
             where: {
                 id: user.id
