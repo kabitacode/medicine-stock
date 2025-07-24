@@ -2,12 +2,14 @@ import { Op } from 'sequelize';
 import KategoriModel from '../models/KategoriModel.mjs';
 import ObatModel from '../models/ObatModel.mjs';
 import UserModel from '../models/UserModel.mjs';
+import SupplierModel from '../models/SupplierModel.mjs';
 
 export const getObat = async (req, res) => {
     try {
         const result = await ObatModel.findAll({
             include: [
                 { model: KategoriModel },
+                { model: SupplierModel },
                 { model: UserModel, attributes: ['id', 'name', 'email', 'role'] }
             ],
             order: [
@@ -33,6 +35,7 @@ export const getObatById = async (req, res) => {
             },
             include: [
                 { model: KategoriModel },
+                { model: SupplierModel },
                 { model: UserModel, attributes: ['id', 'name', 'email', 'role'] }
             ]
         });
@@ -48,7 +51,7 @@ export const getObatById = async (req, res) => {
 }
 
 export const createObat = async (req, res) => {
-    const { nama_obat, stok, harga, tanggal_kadaluarsa, harga_beli, id_kategori, id_penerbit } = req.body;
+    const { nama_obat, stok, harga, tanggal_kadaluarsa, harga_beli, id_kategori, id_supplier } = req.body;
     const user_id = req.userId;
     try {
         const today = new Date().toISOString().split('T')[0];
@@ -65,7 +68,7 @@ export const createObat = async (req, res) => {
             tanggal_kadaluarsa,
             status_kadaluarsa,
             id_kategori,
-            id_penerbit,
+            id_supplier,
             user_id
         });
         res.status(201).json({
@@ -79,7 +82,7 @@ export const createObat = async (req, res) => {
 }
 
 export const updateObat = async (req, res) => {
-    const { nama_obat, stok, harga, harga_beli, tanggal_kadaluarsa, id_kategori, id_penerbit } = req.body;
+    const { nama_obat, stok, harga, harga_beli, tanggal_kadaluarsa, id_kategori, id_supplier } = req.body;
     const user_id = req.userId;
     try {
         const today = new Date().toISOString().split('T')[0];
@@ -103,7 +106,7 @@ export const updateObat = async (req, res) => {
             tanggal_kadaluarsa: tanggal_kadaluarsa,
             status_kadaluarsa,
             id_kategori: id_kategori,
-            id_penerbit: id_penerbit,
+            id_supplier: id_supplier,
             user_id: user_id
         }, {
             where: {
