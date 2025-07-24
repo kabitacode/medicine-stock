@@ -193,7 +193,7 @@ const Page: React.FC = () => {
                     </div>
 
                     <div className="w-1/3 mr-5 mb-5">
-                        <FormControl fullWidth error={!!errors.obat}>
+                        <FormControl fullWidth error={!!errors.user}>
                             <InputLabel id="obat-label">Penerima</InputLabel>
                             <Controller
                                 name="user"
@@ -219,7 +219,7 @@ const Page: React.FC = () => {
                     </div>
 
                     <div className="w-1/3 mr-5 mb-5">
-                        <FormControl fullWidth error={!!errors.obat}>
+                        <FormControl fullWidth error={!!errors.supplier}>
                             <InputLabel id="obat-label">Supplier</InputLabel>
                             <Controller
                                 name="supplier"
