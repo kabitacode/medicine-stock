@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import db from "../config/database.mjs";
 import KategoriModel from './KategoriModel.mjs';
 import UserModel from './UserModel.mjs';
+import SupplierModel from './SupplierModel.mjs';
 
 const { DataTypes } = Sequelize;
 
@@ -64,14 +65,24 @@ const ObatModel = db.define('obat', {
             key: 'id'
         }
     },
+    id_supplier: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'supplier',
+            key: 'id'
+        }
+    },
 }, {
     freezeTableName: true,
     timestamps: true
 });
 
-// Relasi dengan Kategori dan User
 KategoriModel.hasMany(ObatModel, { foreignKey: 'id_kategori' });
 ObatModel.belongsTo(KategoriModel, { foreignKey: 'id_kategori' });
+
+SupplierModel.hasMany(ObatModel, { foreignKey: 'id_supplier' });
+ObatModel.belongsTo(SupplierModel, { foreignKey: 'id_supplier' });
 
 UserModel.hasMany(ObatModel, { foreignKey: 'user_id' });
 ObatModel.belongsTo(UserModel, { foreignKey: 'user_id' });
