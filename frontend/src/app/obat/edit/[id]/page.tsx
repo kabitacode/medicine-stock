@@ -6,7 +6,7 @@ import DashboardLayout from "../../../dashboard/layout";
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { TextField, Button, IconButton, InputLabel, MenuItem, FormControl, CircularProgress } from '@mui/material';
 import Select from '@mui/material/Select';
-import { fetchKategori, fetchObat, fetchObatEdit, fetchObatId } from '@/services';
+import { fetchDashboard, fetchKategori, fetchObat, fetchObatEdit, fetchObatId, fetchSupplier } from '@/services';
 import useStore from '@/store/useStore';
 import { ArrowBack } from '@mui/icons-material';
 import { toast } from 'react-hot-toast';
@@ -23,19 +23,28 @@ interface FormData {
     harga_beli: string;
     tanggal: Dayjs | null;
     kategori: string;
-    penerbit: string;
+    supplier: string;
 }
 
 interface dataResponse {
     id: number;
     nama: string;
-    penerbit: string;
+    supplier: string;
+}
+
+interface dataResponseSupplier {
+    id: number;
+    nama: string;
+    alamat: string;
+    email: string;
+    no_telepon: string;
 }
 
 const Page: React.FC = () => {
     const { register, handleSubmit, reset, formState: { errors }, control, setValue } = useForm<FormData>();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<dataResponse[]>([]);
+    const [dataSupplier, setDataSupplier] = useState<dataResponseSupplier[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [tanggal, setTanggal] = useState<Dayjs | null>(dayjs());
 
@@ -74,7 +83,24 @@ const Page: React.FC = () => {
             setValue('harga_beli', result.harga_beli);
             setTanggal(dayjs(result.tanggal_kadaluarsa))
             setValue('kategori', result.kategori.id);
-            setValue('penerbit', result.kategori.id);
+            setValue('supplier', result.supplier.id);
+
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchDataSupplier = async () => {
+        if (!user || !user.token) return;
+
+        try {
+            const response = await fetchSupplier(user?.token);
+            const result = response.data;
+
+            setDataSupplier(result);
+            setLoading(false);
 
         } catch (error: any) {
             toast.error(error.response?.data?.message || error.message);
@@ -86,6 +112,7 @@ const Page: React.FC = () => {
     useEffect(() => {
         fetchDataId()
         fetchData();
+        fetchDataSupplier();
     }, [user]);
 
 
@@ -100,7 +127,7 @@ const Page: React.FC = () => {
                 harga_beli: data.harga_beli,
                 tanggal_kadaluarsa: tanggal?.format('YYYY-MM-DD'),
                 id_kategori: data.kategori,
-                id_penerbit: data.penerbit,
+                id_supplier: data.supplier,
             };
             const response = await fetchObatEdit(user?.token, params.id, postData);
             toast.success(response.message || "Data berhasil Diubah!");
@@ -110,7 +137,7 @@ const Page: React.FC = () => {
                 harga: "",
                 tanggal: "",
                 kategori: "",
-                penerbit: ""
+                supplier: ""
             });
             setTanggal(null)
             router.back();
@@ -217,28 +244,28 @@ const Page: React.FC = () => {
                             </FormControl>
                         </div>
                         <div className="w-1/3">
-                            <FormControl fullWidth error={!!errors.penerbit}>
-                                <InputLabel id="penerbit-label">Penerbit</InputLabel>
+                            <FormControl fullWidth error={!!errors.kategori}>
+                                <InputLabel id="supplier-label">Supplier</InputLabel>
                                 <Controller
-                                    name="penerbit"
+                                    name="supplier"
                                     control={control}
                                     defaultValue=""
-                                    rules={{ required: "Penerbit is required" }}
+                                    rules={{ required: "Supplier is required" }}
                                     render={({ field: { onChange, value }, fieldState: { error } }) => (
                                         <Select
-                                            labelId="penerbit-label"
-                                            id="penerbit"
+                                            labelId="supplier-label"
+                                            id="supplier"
                                             value={value}
-                                            label="Penerbit"
+                                            label="Supplier"
                                             onChange={onChange}
                                         >
-                                            {data.map((item) => (
-                                                <MenuItem key={item.id} value={item.id}>{item.penerbit}</MenuItem>
+                                            {dataSupplier.map((item) => (
+                                                <MenuItem key={item.id} value={item.id}>{item.nama}</MenuItem>
                                             ))}
                                         </Select>
                                     )}
                                 />
-                                {errors.penerbit && <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained mui-1wc848c-MuiFormHelperText-root" id="kategori">{errors.penerbit.message}</p>}
+                                {errors.supplier && <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-sizeMedium MuiFormHelperText-contained mui-1wc848c-MuiFormHelperText-root" id="supplier">{errors.supplier.message}</p>}
                             </FormControl>
                         </div>
                     </div>
