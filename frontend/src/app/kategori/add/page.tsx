@@ -3,30 +3,62 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from "../../dashboard/layout";
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { TextField, Button, IconButton } from '@mui/material'; // Import komponen TextField dari Material-UI
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { TextField, Button, IconButton, Box, InputLabel, MenuItem, FormControl, CircularProgress } from '@mui/material';
+import Select from '@mui/material/Select';
 import { CustomButton, ButtonCustom } from "@/components";
-import { fetchKategoriAdd } from '@/services';
+import { fetchKategoriAdd, fetchSupplier } from '@/services';
 import useStore from '@/store/useStore';
 import { ArrowBack } from '@mui/icons-material';
 import { toast } from 'react-hot-toast';
 
 interface FormData {
     name: string;
-    supplier: string
 }
 
 interface dataResponse {
     message: string
 }
 
+interface dataResponseSupplier {
+    id: number;
+    nama: string;
+    alamat: string;
+    email: string;
+    no_telepon: string;
+}
+
 const Page: React.FC<FormData> = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+    const { register, handleSubmit, reset, formState: { errors }, control, setValue } = useForm<FormData>();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<dataResponse>();
+    const [dataSupplier, setDataSupplier] = useState<dataResponseSupplier[]>([]);
+
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const { user } = useStore();
+
+
+    const fetchDataSupplier = async () => {
+        if (!user || !user.token) return;
+
+        try {
+            const response = await fetchSupplier(user?.token);
+            const result = response.data;
+
+            setDataSupplier(result);
+            setLoading(false);
+
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchDataSupplier();
+    }, [user]);
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         if (!user || !user.token) return;
@@ -34,7 +66,6 @@ const Page: React.FC<FormData> = () => {
         try {
             const postData = {
                 nama: data.name,
-                penerbit: data.supplier
             };
             const response = await fetchKategoriAdd(user?.token, postData);
             toast.success(response.message || "Data berhasil Ditambahkan!");
@@ -46,6 +77,7 @@ const Page: React.FC<FormData> = () => {
             setLoading(false);
         }
     };
+
 
     return (
         <DashboardLayout>
@@ -69,17 +101,7 @@ const Page: React.FC<FormData> = () => {
                             {...register('name', { required: true })}
                         />
                     </div>
-                    <div className="w-1/3 mr-5 mb-5">
-                        <TextField
-                            id="supplier"
-                            label="Penerbit"
-                            variant="outlined"
-                            fullWidth
-                            error={!!errors.supplier}
-                            helperText={errors.supplier && "Nama Supplier is required"}
-                            {...register('supplier', { required: true })}
-                        />
-                    </div>
+                  
 
                     <div className="mt-8">
                         <Button
