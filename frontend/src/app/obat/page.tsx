@@ -311,7 +311,7 @@ const Page: React.FC = () => {
                                 <TableCell sx={{ color: 'white', fontWeight: '600' }}>Harga Beli</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600' }}>Tanggal Kadaluarsa</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600' }}>Status Kadaluarsa</TableCell>
-                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Penerbit</TableCell>
+                                <TableCell sx={{ color: 'white', fontWeight: '600' }}>Supplier</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600' }}>Uploader</TableCell>
                                 <TableCell sx={{ color: 'white', fontWeight: '600', textAlign: 'center' }}>Action</TableCell>
                             </TableRow>
@@ -327,7 +327,7 @@ const Page: React.FC = () => {
                                     <TableCell>{item.harga_beli}</TableCell>
                                     <TableCell>{formattedDate(item.tanggal_kadaluarsa)}</TableCell>
                                     <TableCell>{item.status_kadaluarsa}</TableCell>
-                                    <TableCell>{item.kategori.penerbit}</TableCell>
+                                    <TableCell>{item.supplier.nama}</TableCell>
                                     <TableCell>{item.user.name} | {item.user.role}</TableCell>
                                     <TableCell>
                                         <div className='flex flex-row justify-center'>
