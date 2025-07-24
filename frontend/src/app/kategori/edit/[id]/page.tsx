@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import DashboardLayout from "../../../dashboard/layout";
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { TextField, Button, IconButton } from '@mui/material';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { TextField, Button, IconButton, Box, InputLabel, MenuItem, FormControl, CircularProgress } from '@mui/material';
+import Select from '@mui/material/Select';
 import { CustomButton, ButtonCustom } from "@/components";
-import { fetchKategoriEdit, fetchKategoriId } from '@/services';
+import { fetchKategoriEdit, fetchKategoriId, fetchSupplier } from '@/services';
 import useStore from '@/store/useStore';
 import { ArrowBack } from '@mui/icons-material';
 import { toast } from 'react-hot-toast';
@@ -20,15 +21,15 @@ interface dataResponse {
     message: string
 }
 
+
 const Page: React.FC<FormData> = () => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
+    const { register, handleSubmit, reset, formState: { errors }, control, setValue } = useForm<FormData>();
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<dataResponse>();
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
     const { user } = useStore();
     const params = useParams<{ id: string }>()
-
 
     const fetchDataUsers = async () => {
         if (!user || !user.token) return;
@@ -38,7 +39,6 @@ const Page: React.FC<FormData> = () => {
             const result = response.data;
             reset({
                 nama: result.nama,
-                supplier: result.penerbit
             })
             setLoading(false);
         } catch (error: any) {
@@ -58,13 +58,11 @@ const Page: React.FC<FormData> = () => {
         try {
             const postData = {
                 nama: data.nama,
-                penerbit: data.supplier
             };
             const response = await fetchKategoriEdit(user?.token, params.id, postData);
             toast.success(response.message || "Data berhasil Diubah!");
             reset({
                 nama: "",
-                supplier: ""
             });
             router.back();
         } catch (error: any) {
@@ -95,18 +93,6 @@ const Page: React.FC<FormData> = () => {
                             error={!!errors.nama}
                             helperText={errors.nama && "Nama Kategori is required"}
                             {...register('nama', { required: true })}
-                        />
-                    </div>
-                    <div className="w-1/3 mr-5 mb-5">
-                        <TextField
-                            id="supplier"
-                            label="Penerbit"
-                            variant="outlined"
-                            fullWidth
-                            InputLabelProps={{ shrink: true }}
-                            error={!!errors.supplier}
-                            helperText={errors.supplier && "Supplier is required"}
-                            {...register('supplier', { required: true })}
                         />
                     </div>
                     <div className="mt-8">
