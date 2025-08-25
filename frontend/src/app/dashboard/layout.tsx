@@ -112,92 +112,124 @@ export default function DashboardLayout({ children }: any) {
                </div>
             </div>
          </nav>
-         <aside id="logo-sidebar" className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`} aria-label="Sidebar">
-            <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-               <ul className="space-y-2 font-medium">
-                  <li className={`py-1 ${activeLink === '/dashboard' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <Link href="/dashboard" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                        <Home sx={{ color: activeLink === '/dashboard' ? 'white' : 'black' }} fontSize='small' />
-                        <span className={`py-1 ${activeLink === '/dashboard' ? 'text-white ml-3' : 'ml-3'}`} >Home</span>
-                     </Link>
-                  </li>
-                  <li className={`py-1 ${activeLink === '/obat' || activeLink === '/obat/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <Link href="/obat" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                        <Medication sx={{ color: activeLink === '/obat' || activeLink === '/obat/add' ? 'white' : 'black' }} fontSize='small' />
-                        <span className={`py-1 ${activeLink === '/obat' || activeLink === '/obat/add' ? 'text-white ml-3' : 'ml-3'}`} >Daftar Obat</span>
-                     </Link>
-                  </li>
-                  <li className={`py-1 ${activeLink === '/kategori' || activeLink === '/kategori/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <Link href="/kategori" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                        <Category sx={{ color: activeLink === '/kategori' || activeLink === '/kategori/add' ? 'white' : 'black' }} fontSize='small' />
-                        <span className={`py-1 ${activeLink === '/kategori' || activeLink === '/kategori/add' ? 'text-white ml-3' : 'ml-3'}`}>Kategori Obat</span>
-                     </Link>
-                  </li>
-                  <li className={`py-1 ${activeLink === '/supplier' || activeLink === '/supplier/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <Link href="/supplier" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                        <People sx={{ color: activeLink === '/supplier' || activeLink === '/supplier/add' ? 'white' : 'black' }} fontSize='small' />
-                        <span className={`py-1 ${activeLink === '/supplier' || activeLink === '/supplier/add' ? 'text-white ml-3' : 'ml-3'}`}>Supplier</span>
-                     </Link>
-                  </li>
-                  <li className={`py-1 ${activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <Link href="/penjualan" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                        <Storefront sx={{ color: activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'white' : 'black' }} fontSize='small' />
-                        <span className={`py-1 ${activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'text-white ml-3' : 'ml-3'}`}>Transaksi Penjualan</span>
-                     </Link>
-                  </li>
-                  <li className={`py-1 ${activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <Link href="/obat-masuk" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                        <MedicalInformationSharp sx={{ color: activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'white' : 'black' }} fontSize='small' />
-                        <span className={`py-1 ${activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'text-white ml-3' : 'ml-3'}`}>Transaksi Obat Masuk</span>
-                     </Link>
-                  </li>
-                  <li onClick={() => setIsSubMenu(!isSubMenu)} className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
-                     <div className="flex justify-between items-center p-2 cursor-pointer text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                        <div className='flex items-center'>
-                           <Report sx={{ color: activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan'? 'white' : 'black' }} fontSize='small' />
-                           <span className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan</span>
-                        </div>
-                        {
-                           isSubMenu ? <ArrowDropDown sx={{ color: 'white' }} fontSize='large' /> : <ArrowRight sx={{ color: 'white' }} fontSize='large' />
-                        }
+
+         {
+            user?.role == "Kasir" ?
+               (
+                  <aside id="logo-sidebar" className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`} aria-label="Sidebar">
+                     <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+                        <ul className="space-y-2 font-medium">
+                           <li className={`py-1 ${activeLink === '/dashboard' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/dashboard" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <Home sx={{ color: activeLink === '/dashboard' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/dashboard' ? 'text-white ml-3' : 'ml-3'}`} >Home</span>
+                              </Link>
+                           </li>
+                           <li className={`py-1 ${activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/penjualan" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <Storefront sx={{ color: activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'text-white ml-3' : 'ml-3'}`}>Transaksi Penjualan</span>
+                              </Link>
+                           </li>
+                           <li className={`py-1 ${activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/obat-masuk" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <MedicalInformationSharp sx={{ color: activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'text-white ml-3' : 'ml-3'}`}>Transaksi Obat Masuk</span>
+                              </Link>
+                           </li>
+                        </ul>
                      </div>
-                  </li>
+                  </aside>
+               ) : (
+                  <aside id="logo-sidebar" className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`} aria-label="Sidebar">
+                     <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+                        <ul className="space-y-2 font-medium">
+                           <li className={`py-1 ${activeLink === '/dashboard' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/dashboard" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <Home sx={{ color: activeLink === '/dashboard' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/dashboard' ? 'text-white ml-3' : 'ml-3'}`} >Home</span>
+                              </Link>
+                           </li>
+                           <li className={`py-1 ${activeLink === '/obat' || activeLink === '/obat/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/obat" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <Medication sx={{ color: activeLink === '/obat' || activeLink === '/obat/add' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/obat' || activeLink === '/obat/add' ? 'text-white ml-3' : 'ml-3'}`} >Daftar Obat</span>
+                              </Link>
+                           </li>
+                           <li className={`py-1 ${activeLink === '/kategori' || activeLink === '/kategori/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/kategori" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <Category sx={{ color: activeLink === '/kategori' || activeLink === '/kategori/add' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/kategori' || activeLink === '/kategori/add' ? 'text-white ml-3' : 'ml-3'}`}>Kategori Obat</span>
+                              </Link>
+                           </li>
+                           <li className={`py-1 ${activeLink === '/supplier' || activeLink === '/supplier/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/supplier" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <People sx={{ color: activeLink === '/supplier' || activeLink === '/supplier/add' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/supplier' || activeLink === '/supplier/add' ? 'text-white ml-3' : 'ml-3'}`}>Supplier</span>
+                              </Link>
+                           </li>
+                           <li className={`py-1 ${activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/penjualan" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <Storefront sx={{ color: activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/penjualan' || activeLink === '/penjualan/add' ? 'text-white ml-3' : 'ml-3'}`}>Transaksi Penjualan</span>
+                              </Link>
+                           </li>
+                           <li className={`py-1 ${activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <Link href="/obat-masuk" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <MedicalInformationSharp sx={{ color: activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'white' : 'black' }} fontSize='small' />
+                                 <span className={`py-1 ${activeLink === '/obat-masuk' || activeLink === '/obat-masuk/add' ? 'text-white ml-3' : 'ml-3'}`}>Transaksi Obat Masuk</span>
+                              </Link>
+                           </li>
+                           <li onClick={() => setIsSubMenu(!isSubMenu)} className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
+                              <div className="flex justify-between items-center p-2 cursor-pointer text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                 <div className='flex items-center'>
+                                    <Report sx={{ color: activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'white' : 'black' }} fontSize='small' />
+                                    <span className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan</span>
+                                 </div>
+                                 {
+                                    isSubMenu ? <ArrowDropDown sx={{ color: 'white' }} fontSize='large' /> : <ArrowRight sx={{ color: 'white' }} fontSize='large' />
+                                 }
+                              </div>
+                           </li>
 
-                  {
-                     isSubMenu ? (
-                        <div className=''>
-                           <li className={`py-1 ${activeLink === '/laporan' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
-                              <Link href="/laporan" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                                 <MedicalInformation sx={{ color: activeLink === '/laporan' ? 'white' : 'black' }} fontSize='small' />
-                                 <span className={`py-1 ${activeLink === '/laporan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Obat</span>
-                              </Link>
-                           </li>
-                           <li className={`py-1 ${activeLink === '/laporan/laporan-kadaluarsa' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
-                              <Link href="/laporan/laporan-kadaluarsa" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                                 <MedicalServices sx={{ color: activeLink === '/laporan/laporan-kadaluarsa' ? 'white' : 'black' }} fontSize='small' />
-                                 <span className={`py-1 ${activeLink === '/laporan/laporan-kadaluarsa' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Kadaluarsa</span>
-                              </Link>
-                           </li>
-                           <li className={`py-1 ${activeLink === '/laporan/laporan-mendekati' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
-                              <Link href="/laporan/laporan-mendekati" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                                 <Medication sx={{ color: activeLink === '/laporan/laporan-mendekati' ? 'white' : 'black' }} fontSize='small' />
-                                 <span className={`py-1 ${activeLink === '/laporan/laporan-mendekati' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Mendekati Kadaluarsa</span>
-                              </Link>
-                           </li>
-                           <li className={`py-1 ${activeLink === '/laporan/laporan-penjualan' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
-                              <Link href="/laporan/laporan-penjualan" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
-                                 <StoreMallDirectory sx={{ color: activeLink === '/laporan/laporan-penjualan' ? 'white' : 'black' }} fontSize='small' />
-                                 <span className={`py-1 ${activeLink === '/laporan/laporan-penjualan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Penjualan</span>
-                              </Link>
-                           </li>
-                        </div>
-                     ) : null
-                  }
+                           {
+                              isSubMenu ? (
+                                 <div className=''>
+                                    <li className={`py-1 ${activeLink === '/laporan' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
+                                       <Link href="/laporan" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                          <MedicalInformation sx={{ color: activeLink === '/laporan' ? 'white' : 'black' }} fontSize='small' />
+                                          <span className={`py-1 ${activeLink === '/laporan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Obat</span>
+                                       </Link>
+                                    </li>
+                                    <li className={`py-1 ${activeLink === '/laporan/laporan-kadaluarsa' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
+                                       <Link href="/laporan/laporan-kadaluarsa" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                          <MedicalServices sx={{ color: activeLink === '/laporan/laporan-kadaluarsa' ? 'white' : 'black' }} fontSize='small' />
+                                          <span className={`py-1 ${activeLink === '/laporan/laporan-kadaluarsa' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Kadaluarsa</span>
+                                       </Link>
+                                    </li>
+                                    <li className={`py-1 ${activeLink === '/laporan/laporan-mendekati' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
+                                       <Link href="/laporan/laporan-mendekati" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                          <Medication sx={{ color: activeLink === '/laporan/laporan-mendekati' ? 'white' : 'black' }} fontSize='small' />
+                                          <span className={`py-1 ${activeLink === '/laporan/laporan-mendekati' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Mendekati Kadaluarsa</span>
+                                       </Link>
+                                    </li>
+                                    <li className={`py-1 ${activeLink === '/laporan/laporan-penjualan' ? 'bg-green-900 text-white' : 'bg-green-700 text-white'}`}>
+                                       <Link href="/laporan/laporan-penjualan" className="flex items-center p-2 text-white rounded-lg dark:text-white  dark:hover:bg-gray-700">
+                                          <StoreMallDirectory sx={{ color: activeLink === '/laporan/laporan-penjualan' ? 'white' : 'black' }} fontSize='small' />
+                                          <span className={`py-1 ${activeLink === '/laporan/laporan-penjualan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan Penjualan</span>
+                                       </Link>
+                                    </li>
+                                 </div>
+                              ) : null
+                           }
 
 
-               </ul>
-            </div>
-         </aside>
+                        </ul>
+                     </div>
+                  </aside>
+               )
+         }
+
          <div className="p-2 sm:ml-64 mt-14">
             {
                error && <div className="mb-10 flex items-center justify-center">
