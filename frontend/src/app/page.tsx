@@ -4,12 +4,16 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { login } from '@/services';
-import useStore, { User } from '@/store/useStore'
 import { AccountCircle } from "@mui/icons-material";
 import { Alert, AlertTitle, CircularProgress } from "@mui/material";
+import { signIn } from "next-auth/react";
 
+type LoginFormValues = {
+  email: string
+  password: string
+}
 
 
 const Page: React.FC = () => {
@@ -17,16 +21,25 @@ const Page: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const { setUser } = useStore();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>()
 
-  const handleLogin = async (data: any) => {
+  const handleLogin: SubmitHandler<LoginFormValues> = async (data) => {
     setLoading(true);
     setError(null);
     try {
-      const userData: User = await login(data.email, data.password);
-      setUser(userData);
-      router.push('/dashboard');
+      const res = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      })
+
+      if (res?.ok) {
+        router.push("/dashboard")
+      }
     } catch (error: any) {
       setError(error.response?.data?.message || error.message);
     } finally {

@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import DashboardLayout from "../dashboard/layout";
 import Link from 'next/link';
 import { Add, Close, Delete, Edit, ListAlt, MedicationOutlined, TrendingUp } from "@mui/icons-material";
@@ -21,6 +21,7 @@ import { BarChart, LineChart } from '@mui/x-charts';
 
 import axios from 'axios';
 import { fetchDashboardPenjualan } from '@/services/dashboard';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
 interface dataResponse {
   totalKadaluarsa: string;
@@ -70,11 +71,8 @@ const Page: React.FC = () => {
       setData(apiData.data.detail.stokObat)
       setDataKadaluarsa(apiData.data.detail.kadaluarsaObat)
       setDataMendekati(apiData.data.detail.mendekatiKadaluarsaObat)
-      console.log(apiData.data);
 
       setLoading(false);
-
-
 
     } catch (error: any) {
       toast.error(error.response?.data?.message || error.message);

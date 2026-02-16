@@ -2,10 +2,10 @@
 import { create } from 'zustand'
 
 export interface User {
-  email: string;
-  name: string;
-  role: string;
-  token: string;
+  email?: string;
+  name?: string;
+  role?: string;
+  token?: string;
 }
 
 interface AuthState {
@@ -15,15 +15,9 @@ interface AuthState {
 }
 
 const useStore = create<AuthState>((set) => ({
-  user: typeof window !== "undefined" ? JSON.parse(sessionStorage.getItem('user') || 'null') : null,
-  setUser: (user) => {
-    sessionStorage.setItem('user', JSON.stringify(user));
-    set({ user });
-  },
-  clearUser: () => {
-    sessionStorage.removeItem('user');
-    set({ user: null });
-  },
+  user: null,
+  setUser: (user) => set({ user }),
+  clearUser: () => set({ user: null }),
 }));
 
 export default useStore;

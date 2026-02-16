@@ -1,23 +1,19 @@
 'use client';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
-import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu, { MenuProps } from '@mui/material/Menu';
+import Link from 'next/link';
+import { redirect, usePathname, useRouter } from 'next/navigation';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Alert, AlertTitle, IconButton } from '@mui/material';
-import { AccountBox, ArrowDropDown, ArrowRight, Category, ChevronRight, Home, Logout, MedicalInformation, MedicalServices, Medication, Report, Storefront, StoreMallDirectory, People, MedicalInformationSharp, MedicalServicesOutlined } from '@mui/icons-material';
+import { AccountBox, ArrowDropDown, ArrowRight, Category, Home, Logout, MedicalInformation, MedicalServices, Medication, Report, Storefront, StoreMallDirectory, People, MedicalInformationSharp, MedicalServicesOutlined } from '@mui/icons-material';
 import { StyledMenu } from '@/components';
-import { logout } from '@/services';
 import useStore from '@/store/useStore'
+import { signOut, useSession } from 'next-auth/react'
+import { logout } from '@/services';
+
 
 export default function DashboardLayout({ children }: any) {
-   const { user, clearUser } = useStore();
-   const router = useRouter();
-
+   const { user } = useStore();
    const [activeLink, setActiveLink] = useState('');
    const [error, setError] = useState<string | null>(null);
    const [loading, setLoading] = useState(false);
@@ -25,6 +21,23 @@ export default function DashboardLayout({ children }: any) {
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
    const [isSubMenu, setIsSubMenu] = useState(false);
+
+   const { data: session } = useSession()
+   const setUser = useStore((state) => state.setUser)
+   const clearUser = useStore((s) => s.clearUser)
+
+
+   useEffect(() => {
+      if (session?.user?.email) {
+         setUser({
+            email: session.user.email!,
+            name: session.user.name!,
+            token: session.accessToken
+         })
+      }
+   }, [session, setUser])
+
+
    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
    };
@@ -51,16 +64,16 @@ export default function DashboardLayout({ children }: any) {
    }
 
    const handleLogout = async () => {
-      if (!user?.token) return;
-
       try {
-         await logout(user?.token);
-         clearUser();
-         router.push('/');
-      } catch (error: any) {
-         setError(error.response?.data?.message || error.message);
+         if (session?.accessToken) {
+            await logout(session.accessToken)
+         }
+      } catch (err) {
+         console.error('Logout backend error', err)
       } finally {
-         setLoading(false);
+         clearUser()
+
+         await signOut({ callbackUrl: '/' })
       }
    }
 
@@ -154,7 +167,7 @@ export default function DashboardLayout({ children }: any) {
                   <li onClick={() => setIsSubMenu(!isSubMenu)} className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'bg-green-700 text-white' : 'bg-white text-gray-700'}`}>
                      <div className="flex justify-between items-center p-2 cursor-pointer text-gray-900 rounded-lg dark:text-white  dark:hover:bg-gray-700">
                         <div className='flex items-center'>
-                           <Report sx={{ color: activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan'? 'white' : 'black' }} fontSize='small' />
+                           <Report sx={{ color: activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'white' : 'black' }} fontSize='small' />
                            <span className={`py-1 ${activeLink === '/laporan' || activeLink === '/laporan/laporan-kadaluarsa' || activeLink === '/laporan/laporan-mendekati' || activeLink === '/laporan/laporan-penjualan' ? 'text-white ml-3' : 'ml-3'}`}>Laporan</span>
                         </div>
                         {
